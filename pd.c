@@ -17,13 +17,13 @@
 
 void print_mac_addr(struct sockaddr *s){
 	#ifdef __linux__
-	struct sockaddr_ll *sl = (struct sockaddr_ll*)s;
+	struct sockaddr_ll *sl = (struct sockaddr_ll *)s;
 	printf("%02x:%02x:%02x:%02x:%02x:%02x", sl->sll_addr[0], sl->sll_addr[1], sl->sll_addr[2], sl->sll_addr[3], sl->sll_addr[4], sl->sll_addr[5]);
 	#else
-	struct sockaddr_dl *sd = *(struct sockaddr_dl*)s;
+	struct sockaddr_dl *sd = (struct sockaddr_dl *)s;
 	if(sd->sdl_alen == 6){
-		unsigned char *p = (unsigned char*)LLADDR(sd);
-		printf(("%02x:%02x:%02x:%02x:%02x:%02x", p[0], p[1], p[2], p[3], p[4], p[5]);
+		unsigned char *p = (unsigned char *)LLADDR(sd);
+		printf("%02x:%02x:%02x:%02x:%02x:%02x", p[0], p[1], p[2], p[3], p[4], p[5]);
 	}
 
 	#endif
@@ -58,12 +58,12 @@ void print_if(struct ifaddrs *i){
 	}
 
 	if(i->ifa_addr && i->ifa_addr->sa_family == AF_INET){
-		struct sockaddr_in *ipv4 = (struct sockaddr_in*)i->ifa_addr;
+		struct sockaddr_in *ipv4 = (struct sockaddr_in *)i->ifa_addr;
 		char ipstr[INET_ADDRSTRLEN];
 		inet_ntop(AF_INET, &ipv4->sin_addr, ipstr, INET_ADDRSTRLEN);
 		printf("    inet %s", ipstr);
 		if(i->ifa_netmask){
-			struct sockaddr_in *m = (struct sockaddr_in*)i->ifa_netmask;
+			struct sockaddr_in *m = (struct sockaddr_in *)i->ifa_netmask;
 			inet_ntop(AF_INET, &m->sin_addr, ipstr, INET_ADDRSTRLEN);
 			printf("/%s", ipstr);
 		}
