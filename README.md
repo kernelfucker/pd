@@ -2,7 +2,7 @@
 list the nics
 
 # compile
-$ clang pd.c -o pd -Os os
+$ clang pd.c -o pd -Wall -Werror -Os os
 
 # usage
 $ ./pd
